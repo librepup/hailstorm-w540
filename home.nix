@@ -6,6 +6,24 @@ let
   fullOpacity = 1.0;
 in
 {
+  # Vicinae
+  services.vicinae = {
+    enable = true; # default: false
+    systemd = {
+      enable = true; # default: false
+      autoStart = true; # default: false
+      environment = {
+        USE_LAYER_SHELL = 1;
+      };
+    };
+    extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
+      bluetooth
+      nix
+      niri
+      pulseaudio
+      process-manager
+    ];
+  };
   programs.noctalia-shell = {
     enable = true;
     package = inputs.noctalia.packages.${pkgs.system}.default;
