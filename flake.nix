@@ -39,6 +39,24 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    astal = {
+      url = "github:aylur/astal";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ags = {
+      url = "github:aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.astal.follows = "astal";
+    };
+
+    vicinae.url = "github:vicinaehq/vicinae";
+
+   vicinae-extensions = {
+      url = "github:vicinaehq/extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nix-alien = {
@@ -55,9 +73,11 @@
               nix-flatpak, stylix,
               nix-index-database, nixmacs,
               nixvim, noctalia, nix-alien,
-              nix-search-tv, ... }:
+              nix-search-tv, astal, ags, vicinae, ... }:
     let
       system = "x86_64-linux";
+      agsPkg = ags.packages.${system}.default;
+      #marblePkg = marble-shell.packages.${system}.default;
     in {
       nixosConfigurations.hailstorm = nixpkgs.lib.nixosSystem {
         inherit system;
@@ -71,6 +91,7 @@
           
           ({ config, pkgs, lib, ... }:
             let
+              #vicinae = pkgs.callPackage ./packages/vicinae/default.nix {};
               synapsian = pkgs.callPackage ./packages/synapsian/default.nix {};
               karamarea = pkgs.callPackage ./packages/karamarea/default.nix {};
               osuLazerLatest = pkgs.callPackage ./packages/osuLazerLatest.nix {};
@@ -96,6 +117,7 @@
                   nixmacs.homeManagerModules.default
                   nixvim.homeModules.nixvim
                   inputs.noctalia.homeModules.default # Noctalia
+                  vicinae.homeManagerModules.default # Vicinae
                 ];
                 backupFileExtension = "backup";
               };
@@ -325,6 +347,11 @@
              description = "puppy";
              extraGroups = [ "networkmanager" "wheel" "dialout" "plugdev" "guixbuild" ];
              packages = with pkgs; [
+               # Marble Shell
+               agsPkg
+               #marblePkg
+               pkgs.pnpm
+               # END
                gamescope
                microsoft-edge
                feh
@@ -337,6 +364,7 @@
                discord
                vesktop
                veracrypt
+               pulseaudioFull
                gimp3-with-plugins
                pciutils
                xdotool
@@ -396,6 +424,8 @@
                pamixer
                # Javascipt/NodeJS
                nodejs_24
+               glib
+               pnpm
                # Arduino
                xorg.xkbutils
                arduino-ide
@@ -432,6 +462,7 @@
                swaylock-fancy
                wlsunset
                wofi
+               sherlock-launcher
                wtype
                mako
                xwayland
@@ -897,6 +928,7 @@
              emacs-x11
              irssi
              home-manager
+             #vicinae
              osuLazerLatest
              libelf
              gnumake
