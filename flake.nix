@@ -365,6 +365,7 @@
                vesktop
                veracrypt
                pulseaudioFull
+               (pass.withExtensions (exts: with exts; [ pass-import ]))
                gimp3-with-plugins
                pciutils
                xdotool
@@ -1042,6 +1043,11 @@ EOF
            programs.fzf.fuzzyCompletion = true;
 
            programs.nix-ld.enable = true;
+
+           programs.gnupg.agent = {
+             enable = true;
+             enableSSHSupport = true;
+           };
            
            # Wayland
            programs = {
