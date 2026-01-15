@@ -375,6 +375,7 @@
                vesktop
                veracrypt
                pulseaudioFull
+               element-desktop
                (pass.withExtensions (exts: with exts; [ pass-import ]))
                gimp3-with-plugins
                pciutils
@@ -470,7 +471,8 @@
                rustlings
                # XMonad
                xmobar
-               # Niri
+               # Niri/Mango Wayland
+               wf-recorder
                marker
                swaybg
                waybar
@@ -610,6 +612,9 @@
                  guix-update = "guix pull && guix package --upgrade && guix gc $@";
                };
                shellInit = ''
+                 echoout() {
+                   echo "$(<"$1")"
+                 }
                  # Create Haskell default.nix to build Haskell Program with Nix
                  create() {
                    local help_text="create [arg] -- Create Template
@@ -1108,8 +1113,8 @@ EOF
            };
            systemd.services.tor.wantedBy = lib.mkForce [ ];
 
-            
-            services.displayManager.defaultSession = "niri";
+            services.displayManager.defaultSession = "mango";            
+            #services.displayManager.defaultSession = "niri";
             # Enable CUPS to print documents.
             services.printing.enable = true;
             # Enable sound with pipewire.
