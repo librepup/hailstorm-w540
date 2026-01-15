@@ -184,7 +184,8 @@ in
       bind=Alt+Shift,Return,spawn,kitty
       
       # exit
-      bind=Alt+Shift,x,quit
+      #bind=Alt+Shift,x,quit
+      bind=Alt+Shift,x,spawn,~/.scripts/mango-exit.sh
       bind=ALT+Shift,q,killclient,
 
       # switch window focus
@@ -203,7 +204,7 @@ in
       # switch window status
       bind=ALT,g,toggleglobal,
       bind=SUPER,Space,toggleoverview,
-      bind=ALT+SHIFT,Space,togglefloating,
+      bind=Alt,Shift,Space,togglefloating
       bind=Super,Space,togglefloating
       bind=Alt+Shift,a,togglemaximizescreen,
       bind=Alt+Shift,f,togglefullscreen,
@@ -215,7 +216,7 @@ in
       
       # scroller layout
       bind=ALT,e,set_proportion,1.0
-      bind=ALT,x,switch_proportion_preset,
+      #bind=ALT,x,switch_proportion_preset,
 
       # Applications
       bind=ALT+Shift,e,spawn,emacs-wayland
@@ -377,6 +378,23 @@ in
     [preview]
     command = "nix-search-tv preview {}"
   '';
+  home.file.".scripts/mango-exit.sh" = {
+    text = ''
+      #!/usr/bin/env sh
+      
+      choice=$(printf "no\nyes" | wofi --dmenu \
+        --prompt "Exit MangoWC?" \
+        --width 300 \
+        --height 150)
+      
+      if [ "$choice" = "yes" ]; then
+          kill $(pidof mango)
+      else
+          return
+      fi
+    '';
+    executable = true;
+  };
   home.pointerCursor = {
     gtk.enable = true;
     x11.enable = true;
