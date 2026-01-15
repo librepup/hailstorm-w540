@@ -66,28 +66,36 @@
     nix-search-tv = {
       url = "github:3timeslazy/nix-search-tv";
     };
-  
+
+    mango = {
+      url = "github:DreamMaoMao/mango";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, # Added 'inputs@'
               nix-flatpak, stylix,
               nix-index-database, nixmacs,
               nixvim, noctalia, nix-alien,
-              nix-search-tv, astal, ags, vicinae, ... }:
+              nix-search-tv, astal, ags, vicinae,
+              mango, ... }:
     let
       system = "x86_64-linux";
       agsPkg = ags.packages.${system}.default;
-      #marblePkg = marble-shell.packages.${system}.default;
     in {
       nixosConfigurations.hailstorm = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit inputs; }; # Added for Noctalia
+        specialArgs = {
+          inherit inputs; # Added for Noctalia
+        };
         modules = [
           # Your existing configuration.nix (this file must stay in the same directory as flake.nix)
           #./configuration.nix
           stylix.nixosModules.stylix
           nix-index-database.nixosModules.nix-index
           home-manager.nixosModules.home-manager
+          mango.nixosModules.mango
           
           ({ config, pkgs, lib, ... }:
             let
@@ -118,6 +126,7 @@
                   nixvim.homeModules.nixvim
                   inputs.noctalia.homeModules.default # Noctalia
                   vicinae.homeManagerModules.default # Vicinae
+                  inputs.mango.hmModules.mango # MangoWC
                 ];
                 backupFileExtension = "backup";
               };
@@ -279,6 +288,7 @@
             #  sudo.enable = false;
             #};
             # Enable the X11 windowing system.
+            programs.mango.enable = true;
             programs.xwayland.enable = true;
             services.xserver = {
               videoDrivers = [ "nvidia" ];
@@ -461,6 +471,7 @@
                # XMonad
                xmobar
                # Niri
+               marker
                swaybg
                waybar
                swayidle
@@ -474,6 +485,7 @@
                xwayland
                xwayland-satellite
                grim
+               slurp
                foot
                grimblast
                sway-contrib.grimshot
@@ -1019,13 +1031,11 @@ EOF
              inherit (self.inputs.nix-alien.packages.${system});
              nix-alien = self.inputs.nix-alien.packages.${system}.default;
            in [
-             #vim
              wget
              emacs-wayland
              emacs-x11
              irssi
              home-manager
-             #vicinae
              osuLazerLatest
              libelf
              gnumake
