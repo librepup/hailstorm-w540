@@ -209,8 +209,8 @@ in
       # switch window status
       bind=ALT,g,toggleglobal,
       bind=SUPER,Space,toggleoverview,
-      #bind=Alt,Shift,Space,togglefloating
-      bind=Super,Space,togglefloating
+      bind=ALT+SHIFT,space,togglefloating
+      #bind=Super,Space,togglefloating
       bind=Alt+Shift,a,togglemaximizescreen,
       bind=Alt+Shift,f,togglefullscreen,
       bind=SUPER+Shift,f,togglefakefullscreen,
