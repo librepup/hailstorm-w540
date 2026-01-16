@@ -68,7 +68,8 @@
     };
 
     mango = {
-      url = "git+https://codeberg.org/nixpup/MangoWC.git";
+      #url = "path:/home/puppy/Builder/MangoWC";
+      url = "github:nixpup/MangoWC"; # Add "?ref=vertical-stack" to the url end for specific branch.
       inputs.nixpkgs.follows = "nixpkgs";
     };
     
