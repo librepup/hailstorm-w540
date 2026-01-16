@@ -30,4 +30,4 @@ This setup comes with **home-manager**, **stylix**, **nix-flatpak**, **nix-index
 9. Reboot and enjoy!
 
 ## Screenshot
-![Screenshot](https://codeberg.org/nixpup/hailstorm-w540/raw/branch/main/hailstorm.png)
+![Screenshot](https://raw.githubusercontent.com/nixpup/hailstorm-w540/refs/heads/main/hailstorm.png)
