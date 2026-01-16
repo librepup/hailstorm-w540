@@ -36,6 +36,9 @@ in
       env=WINDOW_MANAGER,mango
       env=SDL_VIDEODRIVER,wayland
 
+      # Stacker
+      stacker_loop=1
+
       # Input
       xkb_rules_layout=us
       xkb_rules_options=caps:ctrl_modifier,ctrl:swapcaps
@@ -167,14 +170,14 @@ in
       # layout support:
       # tile,scroller,grid,deck,monocle,center_tile,vertical_tile,vertical_scroller
       tagrule=id:1,layout_name:scroller
-      tagrule=id:2,layout_name:tile
-      tagrule=id:3,layout_name:monocle
-      tagrule=id:4,layout_name:deck
-      tagrule=id:5,layout_name:grid
-      tagrule=id:6,layout_name:center_tile
-      tagrule=id:7,layout_name:vertical_tile
-      tagrule=id:8,layout_name:tile
-      tagrule=id:9,layout_name:tile
+      tagrule=id:2,layout_name:scroller
+      tagrule=id:3,layout_name:scroller
+      tagrule=id:4,layout_name:tile
+      tagrule=id:5,layout_name:monocle
+      tagrule=id:6,layout_name:deck
+      tagrule=id:7,layout_name:grid
+      tagrule=id:8,layout_name:center_tile
+      tagrule=id:9,layout_name:vertical_tile
       
       # reload config
       bind=Alt+Shift,r,reload_config
