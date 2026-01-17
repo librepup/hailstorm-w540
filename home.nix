@@ -40,7 +40,7 @@ in
       stacker_loop=1
 
       # Input
-      xkb_rules_layout=us
+      xkb_rules_layout=us(altgr-intl)
       xkb_rules_options=caps:ctrl_modifier,ctrl:swapcaps
       repeat_rate=25
       repeat_delay=600
@@ -76,18 +76,21 @@ in
       animations=1
       layer_animations=1
       animation_type_open=slide
-      animation_type_close=slide
+      animation_type_close=zoom
+      #animation_type_close=slide
       animation_fade_in=1
       animation_fade_out=1
       tag_animation_direction=1
       zoom_initial_ratio=0.3
-      zoom_end_ratio=0.8
+      zoom_end_ratio=0.1
+      #zoom_end_ratio=0.8
       fadein_begin_opacity=0.5
       fadeout_begin_opacity=0.8
       animation_duration_move=500
       animation_duration_open=400
       animation_duration_tag=350
-      animation_duration_close=800
+      animation_duration_close=250
+      #animation_duration_close=800
       animation_duration_focus=0
       animation_curve_open=0.46,1.0,0.29,1
       animation_curve_move=0.46,1.0,0.29,1
@@ -204,12 +207,9 @@ in
       bind=Alt+SHIFT,Left,exchange_client,left
       bind=Alt+SHIFT,Right,exchange_client,right
 
-      ### EXPERIMENTAL
+      # stacker
       bind=Alt,comma,scroller_stack_left
       bind=Alt,period,scroller_stack_right
-      #bind=Alt,comma,stack_with_left
-      #bind=Alt,period,unstack
-      #bind=Alt,t,revert_size
   
       # switch window status
       bind=ALT,g,toggleglobal,
@@ -220,12 +220,13 @@ in
       bind=Alt+Shift,f,togglefullscreen,
       bind=SUPER+Shift,f,togglefakefullscreen,
       bind=SUPER,i,minimized,
-      bind=SUPER,o,toggleoverlay,
       bind=SUPER+SHIFT,I,restore_minimized
-      bind=ALT,z,toggle_scratchpad
+      bind=SUPER+CTRL,i,toggle_scratchpad
+      bind=SUPER,o,toggleoverlay,
       
       # scroller layout
-      bind=ALT,e,set_proportion,1.0
+      #bind=ALT,e,set_proportion,1.0
+      bind=ALT+SHIFT,a,set_proportion,1.0
       #bind=ALT,x,switch_proportion_preset,
 
       # Applications
@@ -293,6 +294,11 @@ in
       bind=CTRL+ALT,Down,resizewin,+0,+50
       bind=CTRL+ALT,Left,resizewin,-50,+0
       bind=CTRL+ALT,Right,resizewin,+50,+0
+
+      bind=CTRL+ALT,h,resizewin,-10,+0 # Left
+      bind=CTRL+ALT,j,resizewin,+0,+10 # Down
+      bind=CTRL+ALT,k,resizewin,+0,-10 # Up
+      bind=CTRL+ALT,l,resizewin,+10,+0 # Right
       
       # Mouse Button Bindings
       # NONE mode key only work in ov mode
