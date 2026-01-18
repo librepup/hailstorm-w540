@@ -72,6 +72,11 @@
       url = "github:nixpup/MangoPup"; # Add "?ref=vertical-stack" to the url end for specific branch.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    #hevel = {
+    #  url = "path:/home/puppy/Worker/hevel";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
     
   };
 
@@ -80,7 +85,7 @@
               nix-index-database, nixmacs,
               nixvim, noctalia, nix-alien,
               nix-search-tv, astal, ags, vicinae,
-              mango, ... }:
+              mango, ... }: # Add 'hevel' here.
     let
       system = "x86_64-linux";
       agsPkg = ags.packages.${system}.default;
@@ -139,6 +144,7 @@
                   inputs.noctalia.homeModules.default # Noctalia
                   vicinae.homeManagerModules.default # Vicinae
                   inputs.mango.hmModules.mango # MangoWC
+                  #hevel.homeManagerModules.default # Hevel
                 ];
                 backupFileExtension = "backup";
               };
@@ -378,6 +384,7 @@
                #marblePkg
                pkgs.pnpm
                # END
+               edwood
                gamescope
                microsoft-edge
                feh
