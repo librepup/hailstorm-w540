@@ -6,12 +6,12 @@ Configuration files of my W540 ThinkPad running NixOS.
 As always, replace all instances of 'puppy' with your actual username on your own machine.
 
 ## Specs
- - WM: MangoWC
+ - WM: MangoPup (MangoWC)
  - Bar: noctalia-shell
  - Shell: zsh
- - Editor: emacs
+  - Editor: NixMacs (emacs)
  - Distro: NixOS
- - Compositor: MangoWC/Wayland
+ - Compositor: MangoPup/Wayland (MangoWC)
  - Launcher: vicinae
 
 ## Nix Specification
