@@ -145,7 +145,7 @@
                   inputs.noctalia.homeModules.default # Noctalia
                   vicinae.homeManagerModules.default # Vicinae
                   inputs.mango.hmModules.mango # MangoWC
-                  inputs.naitre.hmModules.naitre # MangoWC
+                  inputs.naitre.hmModules.naitre # Naitre HUD
                 ];
                 backupFileExtension = "backup";
               };
@@ -411,6 +411,7 @@
                libreoffice
                gnome-shell-extensions
                xfce.thunar
+               xfce.tumbler
                kew # Terminal Music Player with Cover Preview
                hfsprogs # For Apple HFS+ Filesystems
                ntfs3g # NTFS Filesystem Support
@@ -1039,6 +1040,7 @@
                  "video/mkv" = "mpv.desktop";
                  "video/mov" = "mpv.desktop";
                  "application/pdf" = "zathura.desktop";
+                 "inode/directory" = "thunar.desktop";
                };
              };
            };
@@ -1072,6 +1074,11 @@
              VISUAL = "nixmacs";
              PAGER = "less";
              TERMINAL = "kitty";
+           };
+
+           programs.thunar = {
+             enable = true;
+             plugins = with pkgs.xfce; [ thunar-media-tags-plugin thunar-archive-plugin ];
            };
          
            programs.fzf.fuzzyCompletion = true;
