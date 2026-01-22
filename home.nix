@@ -9,11 +9,21 @@ in
   # Naitre HUD
   wayland.windowManager.naitre = {
     enable = true;
-    exitScript = {
-      enable = true;
-      launcher = "vicinae";
+    extraScripts = {
+      exit = {
+        enable = true;
+        launcher = "vicinae";
+      };
+      pavucontrol.enable = true;
+      vicinaeDmenuRun.enable = true;
+      write = {
+        exitConf.enable = true;
+        pavucontrolConf.enable = true;
+        vicinaeDmenuRunConf.enable = true;
+      };
     };
   };
+  # Flameshot
   services.flameshot = {
     enable = true;
     settings = {
@@ -378,14 +388,6 @@ in
   home.stateVersion = "25.05";
   home.sessionVariables = {
     XDG_DATA_DIRS = "$HOME/.guix-profile/share:$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS";
-  };
-  home.file.".scripts/pavucontrol.sh" = {
-    text = ''
-      #!/usr/bin/env bash
-
-      GSK_RENDERER=gl pavucontrol
-    '';
-    executable = true;
   };
   # Nix-Search-TV
   home.file.".config/nix-search-tv/config.toml".text = ''
@@ -1225,15 +1227,6 @@ in
       ''';
     }
   '';
-  #home.file.".emacs".text = ''
-  #  (let ((orgfile "~/.e.org")
-  #        (elfile "~/.e.el"))
-  #    (when (or (not (file-exists-p elfile))
-  #  	    (file-newer-than-file-p orgfile elfile))
-  #      (require 'org)
-  #      (org-babel-tangle-file orgfile elfile))
-  #    (load-file elfile))
-  #'';
   home.file.".config/wofi/config".text = ''
     width=480
     location=center

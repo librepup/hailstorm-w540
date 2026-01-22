@@ -492,6 +492,7 @@
                gammastep
                xdg-desktop-portal
                xdg-desktop-portal-gtk
+               xdg-desktop-portal-wlr
                hyprshot
                # Alternative Programs
                eza
