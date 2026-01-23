@@ -23,6 +23,15 @@ in
       };
     };
   };
+  # NixMacs
+  nixMacs = {
+    enable = true;
+    exwm = {
+      enable = true;
+      layout = "qwerty";
+    };
+    waylandPackage.enable = true;
+  };
   # Flameshot
   services.flameshot = {
     enable = true;
@@ -505,15 +514,6 @@ in
     name = "DMZ-White";
     package = pkgs.vanilla-dmz;
     size = 32;
-  };
-  # NixMacs
-  nixMacs = {
-    enable = true;
-    exwm = {
-      enable = true;
-      layout = "qwerty";
-    };
-    waylandPackage.enable = true;
   };
   # NixVim
   programs.nixvim = {

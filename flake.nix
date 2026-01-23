@@ -338,7 +338,7 @@
              isNormalUser = true;
              shell = pkgs.zsh;
              description = "puppy";
-             extraGroups = [ "networkmanager" "wheel" "dialout" "plugdev" "guixbuild" ];
+             extraGroups = [ "networkmanager" "wheel" "dialout" "plugdev" "guixbuild" "docker" ];
              packages = with pkgs; [
                sway-audio-idle-inhibit
                unstable.gemini-cli-bin
@@ -405,6 +405,7 @@
                progress
                openssl
                coreutils-full
+               coreutils-prefixed
                nix-prefetch-scripts
                obs-studio
                libreoffice
@@ -709,6 +710,7 @@
                        git remote -v
                        echo "[ Branches ]"
                        echo "$(git branch --list)"
+                       ;;
                      h|help|"")
                        cat <<EOF
                  g - git helper function
@@ -1003,6 +1005,9 @@
                  else
                    PROMPT='  %~ '
                  fi
+                 if [[ -n "$GUIX_ENVIRONMENT" ]]; then
+                   PROMPT='  %~ '
+                 fi
                '';
              };
              firefox.enable = true;
@@ -1101,6 +1106,21 @@
 
            programs.nix-ld.enable = true;
 
+           virtualisation.docker = {
+             enable = true;
+             daemon = {
+               settings = {
+                 data-root = "/mnt/docker/";
+               };
+             };
+           };
+
+           fileSystems."/mnt" = {
+             device = "/dev/sda1";
+             fsType = "ext4";
+             options = [ "defaults" ];
+           };
+           
            programs.gnupg.agent = {
              enable = true;
              enableSSHSupport = true;
