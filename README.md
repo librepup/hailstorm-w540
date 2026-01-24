@@ -17,8 +17,10 @@ As always, replace all instances of 'puppy' with your actual username on your ow
 ## Nix Specification
 This setup comes with **home-manager**, **stylix**, **nix-flatpak**, **nix-index-database**, and much, much more, pre-installed and included in the flake.
 
+## Notice
+Remember to make backups of all the files in your `/etc/nixos` directory, and various other `~/.config` directories if you want to use this configuration.
+
 ## Installation
-!!! Remember to make BACKUPS of your current/old configuration files beforehand. !!!
 1. `git clone https://github.com/nixpup/hailstorm-w540`
 2. `cd hailstorm-w540`
 3. ```
@@ -27,12 +29,10 @@ This setup comes with **home-manager**, **stylix**, **nix-flatpak**, **nix-index
    cp -r packages/ /etc/nixos
    cp -r files /etc/nixos
    ```  
-4. (Optional, if you want to use Niri): `cp -r config/niri ~/.config`
-5. `mkdir ~/.git-clone && cp -r git-clone/wofi-emoji ~/.git-clone`
-6. Change the flake.nix (`nixosConfigurations.hailstorm = nixpkgs.lib.nixosSystem {`) to reflect your desired hostname. (Replace `hailstorm`.)
-7. Change all instances of `puppy` in the flake.nix and home.nix to your actual username. (Find out by running `whoami`.)
-8. `sudo nixos-rebuild switch --flake /etc/nixos#YOURHOSTNAME`
-9. Reboot and enjoy!
+4. Change the flake.nix (`nixosConfigurations.hailstorm = nixpkgs.lib.nixosSystem {`) to reflect your desired hostname. (Replace `hailstorm`.)
+5. Change all instances of `puppy` in the flake.nix and home.nix to your actual username. (Find out by running `whoami`.)
+6. `sudo nixos-rebuild switch --flake /etc/nixos#YOURHOSTNAME`
+7. Reboot and enjoy!
 
 ## Screenshot
 ![Screenshot](https://raw.githubusercontent.com/nixpup/hailstorm-w540/refs/heads/main/hailstorm.png)
