@@ -60,7 +60,7 @@
       url = "github:vicinaehq/extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
     };
@@ -89,7 +89,7 @@
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
   };
 
   # Added 'inputs@' to 'outputs ='.
@@ -149,7 +149,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.puppy = import ./home.nix;
-                extraSpecialArgs = { 
+                extraSpecialArgs = {
                   inherit inputs pkgs; # Added 'inputs' for noctalia
                 };
                 sharedModules = [
@@ -165,7 +165,7 @@
                 backupFileExtension = "backup";
               };
 
-            # NixOS Configuration            
+            # NixOS Configuration
             # PATH
               environment.sessionVariables = {
                 PATH = "/run/current-system/sw/bin:/run/wrappers/bin:$PATH";
@@ -268,7 +268,7 @@
             # END Claude Variables
             nixpkgs.config.nvidia.acceptLicense = true; # Accept Nvidia License (required)
             hardware.nvidia = {
-              open = false; # Use nonfree Drivers 
+              open = false; # Use nonfree Drivers
               modesetting.enable = true;  # Required for Wayland
               nvidiaPersistenced = true; # Recommended by Perplexity AI
               powerManagement.enable = true;  # For laptop battery
@@ -632,6 +632,15 @@
                  guix-update = "guix pull && guix package --upgrade && guix gc $@";
                };
                shellInit = ''
+                 # c d-Directory Function
+                 function c() {
+                   if [[ $1 == d* ]]; then
+                     local target="''${1#d}"
+                     builtin cd "$target"
+                   else
+                     echo "Usage: c d<directory>"
+                   fi
+                 }
                  # Git/G
                  g() {
                    local cmd="$1"
@@ -742,7 +751,7 @@
                      h|help|"")
                        cat <<EOF
                  g - git helper function
-                 
+
                  Usage:
                    g c|clone <url>        Clone a repository
                    g e|execute <recipe>   Execute pre-made recipes/instructions
@@ -783,7 +792,7 @@
                    echo "Couldn't find 'Cargo.toml' in any parent directory."
                    return 1
                  }
-         
+
                  # Build Nix Function/Expression (package.nix).
                  buildnix() {
                    if [[ -f "package.nix" ]]; then
@@ -793,14 +802,14 @@
                      echo "Could not find 'package.nix'!"
                    fi
                  }
-         
+
                  # Nix and Home Generations
                  nixgens() {
                    NixGens=$(doas nix-env --list-generations --profile /nix/var/nix/profiles/system)
                    HomeGens=$(home-manager generations)
                    echo -e "NixOS Generations:\n$NixGens\nHome-Manager Generations:\n$HomeGens\n"
                  }
-         
+
                  # Get Nix SRI sha256 Hash from URL
                  hashurl() {
                    URL=$@
@@ -808,7 +817,7 @@
                    FINAL=$(nix hash convert --to sri --hash-algo sha256 $HASH)
                    echo -e "\nYour SRI sha256 Hash is:\n$FINAL"
                  }
-         
+
                  # YouTube to mp4
                  mp4() {
                    yt-dlp -f bestvideo+bestaudio -o "%(title)s.%(ext)s" $@
@@ -816,7 +825,7 @@
                  mp4fallback() {
                    yt-dlp -f "bv*+ba/best" --merge-output-format mp4 --user-agent "Mozilla/5.0" --retries 20 -o "%(title)s.%(ext)s" $@
                  }
-         
+
                  # Disks Command
                  disks() {
                    case "$1" in
@@ -849,7 +858,7 @@
                        ;;
                    esac
                  }
-         
+
                  # Universal Extractor
                  extract() {
                    for archive in "$@"; do
@@ -875,26 +884,26 @@
                    doas nix-collect-garbage -d
                    nix store optimise
                  }
-         
+
                  # Ports
                  ports() {
                    doas ss -tulnp | awk '
                      NR==1 {print; next}
                      {printf "%-5s %-20s %-30s %-30s %s\n", $1, $5, $6, $7, $9}'
                  }
-         
+
                  # File Edit Picker
                  edit() {
                    local file
                    file=$(fzf) || return
                    emacs -nw "$file"
                  }
-         
+
                  # Translate Text to English
                  translate() {
                    trans -brief :"en" "$@"
                  }
-         
+
                  # Fuzzy Kill
                  fkill() {
                    local line pid
@@ -912,7 +921,7 @@
                      echo "Aborted."
                    fi
                  }
-         
+
                  # Random String Generator
                  random() {
                    local len
@@ -924,7 +933,7 @@
                    head /dev/urandom | tr -dc A-Za-z0-9 | head -c "$len"
                    echo
                  }
-         
+
                  # Password Generator
                  password() {
                    local len
@@ -942,7 +951,7 @@
                    echo "$pass" >> /mnt/Files/Temp/RandomPasswords.DD
                    echo -e "Printed Password to /mnt/Files/Temp/RandomPasswords.DD.\nPassword: $pass"
                  }
-         
+
                  # LUKS Encryption
                  cryptmount() {
                    if [[ -z "$1" ]]; then
@@ -963,7 +972,7 @@
                    doas umount /mounted
                    doas cryptsetup close encrypted
                  }
-         
+
                  # Extra Crypt
                  extramount() {
                    doas cryptsetup open /dev/sda2 extradisk
@@ -973,7 +982,7 @@
                    doas umount /extra
                    doas cryptsetup close extradisk
                  }
-         
+
                  # Progress Bar Move
                  move() {
                    command mv "$@" &
@@ -981,7 +990,7 @@
                    progress -mp $pid
                    wait $pid
                  }
-         
+
                  # Trash
                  trash() {
                    local file="$1"
@@ -990,7 +999,7 @@
                    mv "$file" "$dir"
                    echo "Moved $file to Trash."
                  }
-         
+
                  # Serve HTTP Server in Current Directory
                  serve() {
                    local port
@@ -1001,7 +1010,7 @@
                    fi
                    nix-shell -p python3 --run "python3 -m http.server "$port""
                  }
-         
+
                  # Backup Files
                  backup() {
                    if [ -z "$1" ]; then
@@ -1130,7 +1139,7 @@
              enable = true;
              plugins = with pkgs.xfce; [ thunar-media-tags-plugin thunar-archive-plugin ];
            };
-         
+
            programs.fzf.fuzzyCompletion = true;
 
            programs.nix-ld.enable = true;
@@ -1140,7 +1149,7 @@
              quickshell.package = pkgs.unstable.quickshell;
              dgop.package = inputs.dgop.packages.${pkgs.system}.default;
            };
-           
+
            virtualisation.docker = {
              enable = true;
              daemon = {
@@ -1155,19 +1164,19 @@
              fsType = "ext4";
              options = [ "defaults" ];
            };
-           
+
            programs.gnupg.agent = {
              enable = true;
              enableSSHSupport = true;
            };
-           
+
            # Wayland
            programs = {
              niri = {
                enable = true;
              };
            };
-           
+
            # Services
            services = {
              yggdrasil = {
@@ -1210,7 +1219,7 @@
            };
            systemd.services.tor.wantedBy = lib.mkForce [ ];
 
-            services.displayManager.defaultSession = "naitre";            
+            services.displayManager.defaultSession = "naitre";
             #services.displayManager.defaultSession = "niri";
             # Enable CUPS to print documents.
             services.printing.enable = true;
