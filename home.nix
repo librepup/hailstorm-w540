@@ -26,6 +26,11 @@ in
   # NixMacs
   nixMacs = {
     enable = true;
+    themes = {
+      fuwamoco = true;
+      marnie = false;
+      gruvbox = false;
+    };
     exwm = {
       enable = true;
       layout = "qwerty";
@@ -398,12 +403,12 @@ in
   home.sessionVariables = {
     XDG_DATA_DIRS = "$HOME/.guix-profile/share:$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS";
   };
-  # DMS Shell
+  # Discord Colorscheme
+  home.file.".config/vesktop/themes/dank-discord.css".source = ./files/config/discord/dank-discord.css;
+  # Kitty Colorschemes
   home.file = {
-    ".config/DankMaterialShell/themes/gruvboxMaterial".source = ./files/config/DankMaterialShell/themes/gruvboxMaterial;
-    ".config/DankMaterialShell/firefox.css".source = ./files/config/DankMaterialShell/firefox.css;
-    ".config/DankMaterialShell/plugin_settings.json".source = ./files/config/DankMaterialShell/plugin_settings.json;
-    ".config/DankMaterialShell/settings.json".source = ./files/config/DankMaterialShell/settings.json;
+    ".config/kitty/fuwamocoColorscheme.conf".source = ./files/config/kitty/fuwamocoColorscheme.conf;
+    ".config/kitty/marnieColorscheme.conf".source = ./files/config/kitty/marnieColorscheme.conf;
   };
   # Btop
   home.file = {
@@ -731,26 +736,6 @@ in
       enable_audio_bell no
       confirm_os_window_close 0
 
-      ### Colors
-      #color0  #1d1f21
-      #color1  #cc6666
-      #color2  #b5bd68
-      #color3  #e6c547
-      #color4  #81a2be
-      #color5  #b294bb
-      #color6  #70c0ba
-      #color7  #373b41
-      #color8  #666666
-      #color9  #ff3334
-      #color10 #9ec400
-      #color11 #f0c674
-      #color12 #81a2be
-      #color13 #b77ee0
-      #color14 #54ced6
-      #color15 #282a2e
-      #foreground            #c5c8c6
-      #background            #1d1f21
-
       selection_foreground    #ebdbb2
       selection_background    #d65d0e
       background              #282828
@@ -775,18 +760,9 @@ in
       cursor_text_color       #665c54
       url_color               #458588
 
-      ### Imports
-      #include /home/puppy/.config/kitty/themes/CrayonPonyFish.conf
-      #include /home/puppy/.config/kitty/themes/Afterglow.conf
-      #include /home/puppy/.config/kitty/themes/Arthur.conf
-      # Gruvbox Dark Theme
-      #include ~/.config/kitty/themes/GruvboxDark.conf
-
       ### Cursor
       cursor_shape beam
       cursor_blink_interval 0
-      #cursor                #ffffff
-      #cursor_text_color     #1d1f21
 
       ### Font
       font_family DejaVu Sans Mono
@@ -822,6 +798,8 @@ in
 
       ## Padding
       window_padding_width 3
+
+      include ~/.config/kitty/fuwamocoColorscheme.conf
     '';
   };
   programs.mpv = {
