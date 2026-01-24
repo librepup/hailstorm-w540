@@ -749,6 +749,14 @@
                        echo "[ Branches ]"
                        echo "$(git branch --list)"
                        ;;
+                     co|cm|commit)
+                       printf "[ Commit Message ]: ~> "
+                       read -r commitMessage
+                       if [ -z "$commitMessage" ]; then
+                         return 1
+                       fi
+                       git commit -m "$commitMessage"
+                       ;;
                      h|help|"")
                        cat <<EOF
                  g - git helper function
@@ -763,6 +771,7 @@
                    g a|add <file>         Add a file
                    g a|add all            Add all files
                    g aa                   Add all files
+                   g co|cm|commit         Commit with specified Message
                    g s|status             Show various status reports/infos
                    g h|help               Show this help
                  EOF
