@@ -90,11 +90,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+
   };
 
   # Added 'inputs@' to 'outputs ='.
   outputs = inputs@{ self, nixpkgs, home-manager, nix-flatpak, stylix, nix-index-database, nixmacs, nixvim, noctalia, nix-alien,
-                     nix-search-tv, astal, ags, vicinae, mango, naitre, nixpkgs-unstable, dms, dgop, ... }:
+                     nix-search-tv, astal, ags, vicinae, mango, naitre, nixpkgs-unstable, dms, dgop, spicetify-nix, ... }:
     let
       system = "x86_64-linux";
       #agsPkg = ags.${system}.default;
@@ -113,6 +115,7 @@
           home-manager.nixosModules.home-manager
           mango.nixosModules.mango
           naitre.nixosModules.naitre
+          inputs.spicetify-nix.nixosModules.default
           # BEGIN Unstable Channel Overlay
           ({ config, pkgs, ... }: {
             nixpkgs.overlays = [
@@ -134,6 +137,7 @@
               urbitNcl = pkgs.callPackage ./packages/urbit/default.nix {};
               epdfinfoPkg = pkgs.callPackage ./packages/epdfinfo/default.nix {};
               cartographCF = pkgs.callPackage ./packages/cartographCF/default.nix {};
+              spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
             in {
             # Replace the let-bindings in configuration.nix with these, or
             # delete them from configuration.nix entirely and rely on imports here.
@@ -161,6 +165,7 @@
                   inputs.mango.hmModules.mango # MangoWC
                   inputs.naitre.hmModules.naitre # Naitre HUD
                   inputs.dms.homeModules.dank-material-shell # DMS Shell
+                  inputs.spicetify-nix.homeManagerModules.default # Spicetify-Nix
                 ];
                 backupFileExtension = "backup";
               };
@@ -362,6 +367,10 @@
              description = "puppy";
              extraGroups = [ "networkmanager" "wheel" "dialout" "plugdev" "guixbuild" "docker" ];
              packages = with pkgs; [
+               spotify
+               mpvpaper
+               gradia
+               wayscriber
                kdePackages.qt5compat
                unstable.quickshell
                btop
@@ -1197,6 +1206,11 @@
            programs.fzf.fuzzyCompletion = true;
 
            programs.nix-ld.enable = true;
+
+           programs.spicetify = {
+             enable = true;
+             theme = spicePkgs.themes.nightlight;
+           };
 
            programs.dank-material-shell = {
              enable = true;
