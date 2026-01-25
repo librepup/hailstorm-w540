@@ -75,7 +75,7 @@
     };
 
     naitre = {
-      #url = "path:/home/puppy/Worker/NaitreHUD"; #/home/puppy/Projects/NaitreHUD
+      #url = "path:/home/puppy/NaitreHUD"; #/home/puppy/Projects/NaitreHUD
       url = "github:nixpup/NaitreHUD";
       inputs.nixpkgs.follows = "nixpkgs";
     };
