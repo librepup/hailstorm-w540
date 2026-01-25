@@ -367,6 +367,7 @@
              description = "puppy";
              extraGroups = [ "networkmanager" "wheel" "dialout" "plugdev" "guixbuild" "docker" ];
              packages = with pkgs; [
+               keepassxc
                spotify
                mpvpaper
                gradia
