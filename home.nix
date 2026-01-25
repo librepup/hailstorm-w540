@@ -403,6 +403,8 @@ in
   home.sessionVariables = {
     XDG_DATA_DIRS = "$HOME/.guix-profile/share:$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS";
   };
+  # FastFetch Config
+  home.file.".config/fastfetch/config.jsonc".source = ./files/config/fastfetch/config.jsonc;
   # Discord Colorscheme
   home.file.".config/vesktop/themes/dank-discord.css".source = ./files/config/discord/dank-discord.css;
   # Kitty Colorschemes
