@@ -32,6 +32,7 @@ in
       marnie = false;
       gruvbox = false;
       templeos = false;
+      cappuccinoNoir = false;
       installAll = true;
     };
     exwm = {
