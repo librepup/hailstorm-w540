@@ -1,0 +1,13 @@
+(specifications->manifest
+ '("hello"
+   "icecat"
+   "neofetch"
+   "icedove"
+   "icedove-wayland"
+   "dillo"
+   "mplayer"
+   "ufetch"
+   "emacs-pdf-tools"
+   "distrobox"
+   "nss-certs"
+   "glibc-locales"))

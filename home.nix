@@ -4,6 +4,7 @@ let
   fontSize = 13;
   transOpacity = 0.95;
   fullOpacity = 1.0;
+  # ZSH Script Files
 in
 {
   # Naitre HUD
@@ -402,6 +403,22 @@ in
   home.stateVersion = "25.05";
   home.sessionVariables = {
     XDG_DATA_DIRS = "$HOME/.guix-profile/share:$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS";
+  };
+  # ZSH Scripts and Functions
+  home.file = {
+    ".scripts/shell/buildnix.sh".source = ./files/scripts/buildnix.sh;
+    ".scripts/shell/cartom.sh".source = ./files/scripts/cartom.sh;
+    ".scripts/shell/crypt.sh".source = ./files/scripts/crypt.sh;
+    ".scripts/shell/disks.sh".source = ./files/scripts/disks.sh;
+    ".scripts/shell/extract.sh".source = ./files/scripts/extract.sh;
+    ".scripts/shell/fkill.sh".source = ./files/scripts/fkill.sh;
+    ".scripts/shell/generators.sh".source = ./files/scripts/generators.sh;
+    ".scripts/shell/git-helper.sh".source = ./files/scripts/git-helper.sh;
+    ".scripts/shell/guix-manager-helper.sh".source = ./files/scripts/guix-manager-helper.sh;
+    ".scripts/shell/hashurl.sh".source = ./files/scripts/hashurl.sh;
+    ".scripts/shell/mp4.sh".source = ./files/scripts/mp4.sh;
+    ".scripts/shell/nix-shell-prebuilds.sh".source = ./files/scripts/nix-shell-prebuilds.sh;
+    ".scripts/shell/upload.sh".source = ./files/scripts/upload.sh;
   };
   # FastFetch Config
   home.file.".config/fastfetch/config.jsonc".source = ./files/config/fastfetch/config.jsonc;

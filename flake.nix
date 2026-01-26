@@ -367,6 +367,9 @@
              description = "puppy";
              extraGroups = [ "networkmanager" "wheel" "dialout" "plugdev" "guixbuild" "docker" ];
              packages = with pkgs; [
+               dive
+               podman-tui
+               docker-compose
                keepassxc
                spotify
                mpvpaper
@@ -643,50 +646,13 @@
                  guix-update = "guix pull && guix package --upgrade && guix gc $@";
                };
                shellInit = ''
-                 # Haskell Shell Pre-Built
-                 nshs() {
-                     if [ "$1" = "h" ]; then
-                         echo -e "[ Usage ]:\n  nshs [haskellPackage1] [haskellPackage2] [...]"
-                         return 0
-                     fi
-                     if [ "$1" = "--help" ]; then
-                         echo -e "[ Usage ]:\n  nshs [haskellPackage1] [haskellPackage2] [...]"
-                         return 0
-                     fi
-                     if [ "$1" = "help" ]; then
-                         echo -e "[ Usage ]:\n  nshs [haskellPackage1] [haskellPackage2] [...]"
-                         return 0
-                     fi
-                     if [ $# -eq 0 ]; then
-                         echo "[ Please provide Haskell Packages ]"
-                         return 1
-                     fi
-                     haskellPackages="$@"
-                     export NSPY_PACKAGES="$haskellPackages"
-                     nix-shell -p "haskellPackages.ghcWithPackages (ps: with ps; [ $haskellPackages ])" --run "echo '[ Installed Packages: $haskellPackages ]' && exec zsh"
-                 }
-                 # Python Shell Pre-Built
-                 nspy() {
-                     if [ "$1" = "h" ]; then
-                         echo -e "[ Usage ]:\n  nspy [pythonPackage1] [pythonPackage2] [...]"
-                         return 0
-                     fi
-                     if [ "$1" = "--help" ]; then
-                         echo -e "[ Usage ]:\n  nspy [pythonPackage1] [pythonPackage2] [...]"
-                         return 0
-                     fi
-                     if [ "$1" = "help" ]; then
-                         echo -e "[ Usage ]:\n  nspy [pythonPackage1] [pythonPackage2] [...]"
-                         return 0
-                     fi
-                     if [ $# -eq 0 ]; then
-                         echo "[ Please provide Python Packages ]"
-                         return 1
-                     fi
-                     pythonPackages="$@"
-                     export NSPY_PACKAGES="$pythonPackages"
-                     nix-shell -p "python3.withPackages (ps: with ps; [ $pythonPackages ])" --run "echo '[ Installed Packages: $pythonPackages ]' && exec zsh"
-                 }
+                 # Source Scripts and Functions
+                 if [ -d "$HOME/.scripts/shell" ]; then
+                   for script in "$HOME/.scripts/shell"/*; do
+                     [ -f "$script" ] && source "$script"
+                   done
+                 fi
+
                  # c d-Directory Function
                  function c() {
                    if [[ $1 == d* ]]; then
@@ -696,175 +662,10 @@
                      echo "Usage: c d<directory>"
                    fi
                  }
-                 # Git/G
-                 g() {
-                   local cmd="$1"
-                   local arg="$2"
-                   case "$cmd" in
-                     e|execute)
-                       if [ -z "$arg" ]; then
-                         echo "Usage: g execute <recipe>"
-                         return 1
-                       fi
-                       if [[ "$arg" = "--help" || "$arg" = "help" || "$arg" = "h" || "$arg" = "recipes" ]]; then
-                         echo "Available recipes: init, push"
-                         return 0
-                       fi
-                       if [ "$arg" = "init" ]; then
-                         echo "[ Initializing Git and Switching to 'main' Branch ]"
-                         git init
-                         git branch -M main
-                         echo " "
-                         echo "[          Enter Repository URL         ]"
-                         echo "[ e.g. https://github.com/name/repo.git ]"
-                         read -p "URL> " repoLink
-                         if [ -z "$repoLink" ]; then
-                           return 1
-                         fi
-                         echo " "
-                         git remote add origin $repoLink
-                         echo "[ Initialized Repo ]"
-                       fi
-                       if [ "$arg" = "push" ]; then
-                         read -p "[ Add all Files in Directory to Repo? ] (y/n): " pushAddAnswer
-                         if [ "$pushAddAnswer" = "y" ]; then
-                           git add .
-                           git add *
-                           git add ./*
-                           echo "[ Added all Files in Current Directory ]"
-                         else
-                           echo "[ Pushing current State of Repo ]"
-                         fi
-                         echo " "
-                         read -p "[ Specify Branch? ('n' = 'main') ] (y/n) :" specifyBranch
-                         if [ "$specifyBranch" = "y" ]; then
-                           read -p "[ Enter Branch Name ]: " branchName
-                           git branch -M $branchName
-                         else
-                           branchName="main"
-                           git branch -M $branchName
-                         fi
-                         read -p "[ Enter Commit Message ]: " commitMessage
-                         git commit -m "$commitMessage"
-                         echo " "
-                         echo "[ Pushing... ]"
-                         git push -u origin $branchName
-                       fi
-                       ;;
-                     c|clone)
-                       if [ -z "$arg" ]; then
-                         echo "Usage: g clone <repo-url>"
-                         return 1
-                       fi
-                       git clone "$arg"
-                       ;;
-                     u|update)
-                       if [ -z "$arg" ]; then
-                         echo "g update adds a provided file to the git repo,"
-                         echo "and then tries to commit it."
-                         echo "Usage: g update <file>"
-                         return 1
-                       fi
-                       git add "$arg"
-                       printf "Commit Message: "
-                       read -r commitMessage
-                       git commit -m "$commitMessage"
-                       ;;
-                     p|push)
-                       git push -u origin main
-                       ;;
-                     n|new)
-                       git init
-                       ;;
-                     i|init)
-                       git init
-                       ;;
-                     a|add)
-                       if [ "$arg" = "all" ]; then
-                         git add .
-                       elif [ -z "$arg" ]; then
-                         echo "Usage: g add <file>|all"
-                         return 1
-                       else
-                         git add "$arg"
-                       fi
-                       ;;
-                     aa|addall)
-                       git add .
-                       git add *
-                       git add ./*
-                       echo "[ Added all Files ]"
-                       ;;
-                     s|status)
-                       echo "[ Status ]"
-                       git status
-                       echo "[ Remote Sources ]"
-                       git remote -v
-                       echo "[ Branches ]"
-                       echo "$(git branch --list)"
-                       ;;
-                     co|cm|commit)
-                       printf "[ Commit Message ]: ~> "
-                       read -r commitMessage
-                       if [ -z "$commitMessage" ]; then
-                         return 1
-                       fi
-                       git commit -m "$commitMessage"
-                       ;;
-                     h|help|"")
-                       cat <<EOF
-                 g - git helper function
-
-                 Usage:
-                   g c|clone <url>        Clone a repository
-                   g e|execute <recipe>   Execute pre-made recipes/instructions
-                   g u|update <file>      Add file and commit with prompt
-                   g p|push               Push to origin main
-                   g n|new                Initialize a new repository
-                   g i|init               Initialize a new repository
-                   g a|add <file>         Add a file
-                   g a|add all            Add all files
-                   g aa                   Add all files
-                   g co|cm|commit         Commit with specified Message
-                   g s|status             Show various status reports/infos
-                   g h|help               Show this help
-                 EOF
-                       ;;
-                     *)
-                       echo "Unknown command: $cmd"
-                       echo "Run 'g help' for usage."
-                       return 1
-                       ;;
-                   esac
-                 }
 
                  # Echo Out File
                  echoout() {
                    echo "$(<"$1")"
-                 }
-
-                 # Open Cargo.toml in the way of your path.
-                 cartom() {
-                   local dir="$PWD"
-                   while [[ "$dir" != "/" ]]; do
-                     if [[ -f "$dir/Cargo.toml" ]]; then
-                       nixmacs -nw "$dir/Cargo.toml"
-                       return 0
-                     fi
-                     dir=$(dirname "$dir")  # go one directory up
-                   done
-                   echo "Couldn't find 'Cargo.toml' in any parent directory."
-                   return 1
-                 }
-
-                 # Build Nix Function/Expression (package.nix).
-                 buildnix() {
-                   if [[ -f "package.nix" ]]; then
-                     echo "Found 'package.nix', building now..."
-                     nix-build -E 'with import <nixpkgs> {}; callPackage ./package.nix {}'
-                   else
-                     echo "Could not find 'package.nix'!"
-                   fi
                  }
 
                  # Nix and Home Generations
@@ -872,74 +673,6 @@
                    NixGens=$(doas nix-env --list-generations --profile /nix/var/nix/profiles/system)
                    HomeGens=$(home-manager generations)
                    echo -e "NixOS Generations:\n$NixGens\nHome-Manager Generations:\n$HomeGens\n"
-                 }
-
-                 # Get Nix SRI sha256 Hash from URL
-                 hashurl() {
-                   URL=$@
-                   HASH=$(nix-prefetch-url $URL)
-                   FINAL=$(nix hash convert --to sri --hash-algo sha256 $HASH)
-                   echo -e "\nYour SRI sha256 Hash is:\n$FINAL"
-                 }
-
-                 # YouTube to mp4
-                 mp4() {
-                   yt-dlp -f bestvideo+bestaudio -o "%(title)s.%(ext)s" $@
-                 }
-                 mp4fallback() {
-                   yt-dlp -f "bv*+ba/best" --merge-output-format mp4 --user-agent "Mozilla/5.0" --retries 20 -o "%(title)s.%(ext)s" $@
-                 }
-
-                 # Disks Command
-                 disks() {
-                   case "$1" in
-                     type)
-                       watch -n 1 lsblk -f
-                       ;;
-                     ext)
-                       watch -n 1 lsblk -f
-                       ;;
-                     fdisk)
-                       doas watch -n 1 fdisk -l
-                       ;;
-                     *)
-                       watch -n 1 lsblk
-                       ;;
-                   esac
-                 }
-
-                 # Upload Files
-                 upload() {
-                   case "$1" in
-                     1)
-                       curl --upload-file $2 https://dropcli.com/upload
-                       ;;
-                     2)
-                       curl -T $2 -s -L -D - xfr.station307.com | grep human
-                       ;;
-                     *)
-                       echo "Please choose either '1' or '2' for a file hoster."
-                       ;;
-                   esac
-                 }
-
-                 # Universal Extractor
-                 extract() {
-                   for archive in "$@"; do
-                     case "$archive" in
-                       *.tar.bz2)   tar xjf "$archive"   ;;
-                       *.tar.gz)    tar xzf "$archive"   ;;
-                       *.tar.xz)    tar xJf "$archive"   ;;
-                       *.tar.zst)   unzstd "$archive" | tar xf - ;;
-                       *.tar)       tar xf "$archive"    ;;
-                       *.bz2)       bunzip2 "$archive"   ;;
-                       *.gz)        gunzip "$archive"    ;;
-                       *.zip)       unzip "$archive"     ;;
-                       *.7z)        7z x "$archive"      ;;
-                       *.rar)       unrar x "$archive"   ;;
-                       *)           echo "Don't know how to extract $archive." ;;
-                     esac
-                   done
                  }
 
                  # Nix Clean
@@ -966,85 +699,6 @@
                  # Translate Text to English
                  translate() {
                    trans -brief :"en" "$@"
-                 }
-
-                 # Fuzzy Kill
-                 fkill() {
-                   local line pid
-                   # Pick a process
-                   line=$(ps -ef | sed 1d | fzf) || return
-                   pid=$(awk '{print $2}' <<< "$line") || return
-                   # Ask for confirmation
-                   echo "Selected: $line"
-                   read -q "REPLY?Kill process $pid? [y/N] "
-                   echo  # newline after read -q
-                   if [[ "$REPLY" == [yY] ]]; then
-                     kill -9 "$pid"
-                     echo "Killed process $pid"
-                   else
-                     echo "Aborted."
-                   fi
-                 }
-
-                 # Random String Generator
-                 random() {
-                   local len
-                   if [ -z "$1" ]; then
-                     len=12
-                   else
-                     len="$1"
-                   fi
-                   head /dev/urandom | tr -dc A-Za-z0-9 | head -c "$len"
-                   echo
-                 }
-
-                 # Password Generator
-                 password() {
-                   local len
-                   local file="/mnt/Files/Temp/RandomPasswords.DD"
-                   if [ -z "$1" ]; then
-                     len=24
-                     local pass=$(openssl rand -base64 24)
-                   else
-                     len="$1"
-                     local pass=$(openssl rand -base64 "$len")
-                   fi
-                   if ! [ -e "$file" ]; then
-                     touch "$file"
-                   fi
-                   echo "$pass" >> /mnt/Files/Temp/RandomPasswords.DD
-                   echo -e "Printed Password to /mnt/Files/Temp/RandomPasswords.DD.\nPassword: $pass"
-                 }
-
-                 # LUKS Encryption
-                 cryptmount() {
-                   if [[ -z "$1" ]]; then
-                     echo "Type cryptmount /dev/DRIVE."
-                     return 1
-                   fi
-                   DRIVE="$1"
-                   doas cryptsetup --type luks open "$DRIVE" encrypted || {
-                     echo " Failed to open encrypted container."
-                     return 1
-                   }
-                   doas mount -t ext4 /dev/mapper/encrypted /mounted || {
-                     echo "Failed to mount."
-                     return 1
-                   }
-                 }
-                 cryptunmount() {
-                   doas umount /mounted
-                   doas cryptsetup close encrypted
-                 }
-
-                 # Extra Crypt
-                 extramount() {
-                   doas cryptsetup open /dev/sda2 extradisk
-                   doas mount /dev/mapper/extradisk /extra
-                 }
-                 extraunmount() {
-                   doas umount /extra
-                   doas cryptsetup close extradisk
                  }
 
                  # Progress Bar Move
@@ -1108,6 +762,11 @@
                  fi
                  if [[ -n "$GUIX_ENVIRONMENT" ]]; then
                    PROMPT='  %~ '
+                 fi
+                 if [ -d "$HOME/.scripts/shell" ]; then
+                   for script in "$HOME/.scripts/shell"/*; do
+                     [ -f "$script" ] && source "$script"
+                   done
                  fi
                '';
              };
@@ -1219,11 +878,17 @@
              dgop.package = inputs.dgop.packages.${pkgs.system}.default;
            };
 
-           virtualisation.docker = {
-             enable = true;
-             daemon = {
-               settings = {
-                 data-root = "/mnt/docker/";
+           virtualisation = {
+             podman = {
+               enable = true;
+               defaultNetwork.settings.dns_enabled = true;
+             };
+             docker = {
+               enable = true;
+               daemon = {
+                 settings = {
+                   data-root = "/mnt/docker/";
+                 };
                };
              };
            };
