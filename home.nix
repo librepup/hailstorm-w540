@@ -17,17 +17,38 @@ in
   # Naitre HUD
   wayland.windowManager.naitre = {
     enable = true;
-    extraScripts = {
+    modularize = {
+      enable = true;
+      additional = ''
+        #------------#
+        # Additional #
+        #------------#
+        # Autostart
+        exec-once=wl-paste --watch cliphist store
+        exec-once=dex --autostart environment naitre
+        exec-once=swaybg -i /home/puppy/Pictures/Wallpapers/fuwamoco.jpg -m fill
+        exec-once=gammastep -l 52.520008:13.404954 -t 4000:4000
+        exec-once=dunst
+        exec-once=dms run
+        exec-once=vicinae server
+        exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=wlroots
+        exec-once=sway-audio-idle-inhibit
+        exec=xwayland-satellite :0
+      '';
+    };
+    scripts = {
       exit = {
         enable = true;
         launcher = "vicinae";
+        keybind = "Alt+Shift,x";
       };
-      pavucontrol.enable = true;
-      vicinaeDmenuRun.enable = true;
-      write = {
-        exitConf.enable = true;
-        pavucontrolConf.enable = true;
-        vicinaeDmenuRunConf.enable = true;
+      pavucontrol = {
+        enable = true;
+        keybind = "SUPER,a";
+      };
+      vicinaeDmenuRun = {
+        enable = true;
+        keybind = "SUPER,f";
       };
     };
   };
@@ -780,11 +801,14 @@ in
       ###########################
       ### Kitty Configuration ###
       ###########################
+      ### User Config
+      include ~/.config/kitty/main.conf
       ### General Settings
       hide_window_decorations no
       enable_audio_bell no
       confirm_os_window_close 0
 
+      ### Colors
       selection_foreground    #ebdbb2
       selection_background    #d65d0e
       background              #282828
@@ -824,7 +848,6 @@ in
       tab_title_template "{fmt.fg._282828}{fmt.bg._282828}{fmt.fg._ebdbb2}{fmt.bg._282828} ({index}) {title} {fmt.fg._282828}{fmt.bg._282828} "
       active_tab_title_template "{fmt.fg._ebdbb2}{fmt.bg._282828}{fmt.fg._d65d0e}{fmt.bg._ebdbb2} ({index}) {title} {fmt.fg._ebdbb2}{fmt.bg._282828} "
       active_tab_font_style bold
-
       map ctrl+1 goto_tab 1
       map ctrl+2 goto_tab 2
       map ctrl+3 goto_tab 3
@@ -838,17 +861,21 @@ in
       map ctrl+w close_tab
       map ctrl+shift+page_up move_tab_backward
       map ctrl+shift+page_down move_tab_forward
-
       active_tab_foreground   #d65d0e
       active_tab_background   #282828
       inactive_tab_foreground #ebdbb2
       inactive_tab_background #282828
       tab_bar_background      #282828
 
-      ## Padding
+      ### Padding
       window_padding_width 3
 
+      ### Colorscheme
       include ~/.config/kitty/fuwamocoColorscheme.conf
+
+      ### Keybinds
+      map ctrl+shift+l send_text normal,application l\r
+      map ctrl+shift+c send_text normal,application cd\r
     '';
   };
   programs.mpv = {
