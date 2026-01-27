@@ -439,8 +439,7 @@ in
   home.file = {
     ".config/waybar/config.jsonc".source = ./files/config/waybar/config.jsonc;
     ".config/waybar/style.css".source = ./files/config/waybar/style.css;
-    ".config/waybar/theme.css".source = ./files/config/waybar/theme.css;
-    ".config/waybar/modules.jsonc".source = ./files/config/waybar/modules.jsonc;
+    ".config/waybar/layout.jsonc".source = ./files/config/waybar/layout.jsonc;
   };
   # ZSH Scripts and Functions
   home.file = {
@@ -457,6 +456,10 @@ in
     ".scripts/shell/mp4.sh".source = ./files/scripts/mp4.sh;
     ".scripts/shell/nix-shell-prebuilds.sh".source = ./files/scripts/nix-shell-prebuilds.sh;
     ".scripts/shell/upload.sh".source = ./files/scripts/upload.sh;
+    ".scripts/waybar.sh" = {
+      source = ./files/scripts/waybar.sh;
+      executable = true;
+    };
   };
   # FastFetch Config
   home.file.".config/fastfetch/config.jsonc".source = ./files/config/fastfetch/config.jsonc;
@@ -882,7 +885,6 @@ in
 
       ### Keybinds
       map ctrl+shift+l send_text normal,application l\r
-      map ctrl+shift+c send_text normal,application cd\r
     '';
   };
   programs.mpv = {

@@ -1,27 +1,11 @@
 {
+  "include": [
+    "~/.config/waybar/layout.jsonc",
+  ],
   "style": "~/.config/waybar/style.css",
-
-  "layer": "top",
-  "position": "top",
-  "height": 24,
-
-  "modules-left": [
-    "ext/workspaces",
-    "memory",
-    "cpu",
-    "temperature"
-  ],
-
-  "modules-center": [
-  ],
-
-  "modules-right": [
-    "backlight",
-    "pulseaudio",
-    "network",
-    "clock",
-    "battery",
-  ],
-
-  "include": "~/.config/waybar/modules.jsonc"
+  "reload_style_on_change": true,
+  "margin-top": 0,
+  "margin-right": 0,
+  "margin-bottom": 0,
+  "margin-left": 0,
 }

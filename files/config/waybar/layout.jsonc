@@ -1,0 +1,104 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 40,
+  "spacing": 2,
+  "exclusive": true,
+  "reload_style_on_change": true,
+
+  "modules-left": ["ext/workspaces", "custom/weather", "memory", "cpu", "group/disks"],
+  "modules-center": [],
+  "modules-right": [
+    "custom/brightness",
+    "pulseaudio",
+    "network",
+    "battery",
+    "clock",
+    "custom/power"
+  ],
+
+  // Modules
+  "custom/weather": {
+    "interval": 1800,
+    "format": "  {}",
+    "exec": "curl -s 'wttr.in/Berlin?format=3' | awk '{print $NF}'",
+    "on-click": "dms ipc call widget toggle weather",
+  },
+  "memory": {
+    "format": " {: >3}%",
+    "on-click": "dms ipc call widget toggle cpuUsage",
+    "tooltip": false,
+  },
+  "cpu": {
+    "format": " {usage: >3}%",
+    "on-click": "dms ipc call widget toggle cpuUsage",
+    "tooltip": false,
+  },
+  "group/disks": {
+    "orientation": "horizontal",
+    "modules": ["disk#root"],
+  },
+  "disk#root": {
+    "interval": 30,
+    "format": "󰋊  {percentage_used}%",
+    "path": "/",
+    "tooltip": false,
+  },
+  "disk#home": {
+    "interval": 30,
+    "format": "󱂵  {percentage_used}%",
+    "path": "/home",
+    "tooltip": false,
+  },
+  "custom/brightness": {
+    "format": "󰃠 {}",
+    "exec": "brightnessctl | grep 'Current brightness' | awk '{print $4}' | sed 's/(//g' | sed 's/)//g'",
+    "interval": 1,
+    "tooltip": false,
+    "on-click": "dms ipc call widget toggle controlCenterButton",
+    "on-click-right": "brightnessctl set 50%",
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "  Muted",
+    "format-icons": {
+      "headphone": "",
+      "default": ["", "", ""],
+    },
+    "scroll-step": 5,
+    "tooltip": false,
+    "on-click": "dms ipc call widget toggle controlCenterButton",
+  },
+  "network": {
+    "interval": 5,
+    "format-wifi": "󰖩 {signalStrength}%",
+    "format-ethernet": "󰈀 Wired",
+    "format-disconnected": "󰖪  Off",
+    "on-click": "dms ipc call widget toggle controlCenterButton",
+    "tooltip": false,
+  },
+  "battery": {
+    "interval": 60,
+    "states": { "warning": 30, "critical": 15 },
+    "format": "{icon}  {capacity}%",
+    "format-charging": "  {capacity}%",
+    "format-icons": ["", "", "", "", "", "", "", "", "", "", ""],
+    "on-click": "dms ipc call widget toggle battery",
+    "tooltip": false,
+  },
+  "tray": {
+    "icon-size": 14,
+    "spacing": 10,
+  },
+  "clock": {
+    "interval": 1,
+    "format": "{:%H:%M}",
+    "tooltip": false,
+    "on-click": "dms ipc call widget toggle clock",
+  },
+  "custom/power": {
+    "format": "⏻",
+    "on-click": "dms ipc call powermenu toggle",
+    "tooltip": false,
+  },
+}
