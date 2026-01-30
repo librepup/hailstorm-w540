@@ -482,6 +482,10 @@ in
       source = ./files/scripts/record.sh;
       executable = true;
     };
+    ".scripts/flameshotCopyToClip.sh" = {
+      source = ./files/scripts/flameshotCopyToClip.sh;
+      executable = true;
+    };
   };
   # FastFetch Config
   home.file.".config/fastfetch/config.jsonc".source = ./files/config/fastfetch/config.jsonc;
