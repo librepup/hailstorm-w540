@@ -18,6 +18,12 @@
   ],
 
   // Modules
+  "custom/recording": {
+    "interval": 0,
+    "signal": 8,
+    "exec": "~/.scripts/record.sh status",
+    "on-click": "~/.scripts/record.sh toggle && pkill -RTMIN+8 waybar",
+  },
   "custom/weather": {
     "interval": 1800,
     "format": "  {}",

@@ -343,6 +343,7 @@
               services = {
                 desktopManager = {
                   gnome.enable = true;
+                  plasma6.enable = true;
                 };
                 displayManager = {
                   gdm = {
@@ -424,6 +425,15 @@
                   "docker"
                 ];
                 packages = with pkgs; [
+                  kdePackages.kcalc
+                  kdePackages.kcharselect
+                  kdePackages.kclock
+                  kdePackages.kcolorchooser
+                  kdePackages.kolourpaint
+                  kdePackages.isoimagewriter
+                  kdePackages.partitionmanager
+                  kdePackages.ksystemlog
+                  qbittorrent
                   nil
                   nixfmt
                   dive
@@ -931,6 +941,8 @@
               programs.fzf.fuzzyCompletion = true;
 
               programs.nix-ld.enable = true;
+
+              programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
 
               programs.spicetify = {
                 enable = true;

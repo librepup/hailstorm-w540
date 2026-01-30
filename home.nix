@@ -435,6 +435,24 @@ in
   home.sessionVariables = {
     XDG_DATA_DIRS = "$HOME/.guix-profile/share:$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS";
   };
+  # MPV
+  home.file = {
+    ".config/mpv/scripts/audio_visualizer.lua".source = ./files/config/mpv/scripts/audio_visualizer.lua;
+    ".config/mpv/scripts/autoload.lua".source = ./files/config/mpv/scripts/autoload.lua;
+    ".config/mpv/scripts/copy-time.lua".source = ./files/config/mpv/scripts/copy-time.lua;
+    ".config/mpv/scripts/cycle-commands.lua".source = ./files/config/mpv/scripts/cycle-commands.lua;
+    ".config/mpv/scripts/cycle-profile.lua".source = ./files/config/mpv/scripts/cycle-profile.lua;
+    ".config/mpv/scripts/modernz.lua".source = ./files/config/mpv/scripts/modernz.lua;
+    ".config/mpv/scripts/mpv-gif.lua".source = ./files/config/mpv/scripts/mpv-gif.lua;
+    ".config/mpv/scripts/playlistmanager.lua".source = ./files/config/mpv/scripts/playlistmanager.lua;
+    ".config/mpv/scripts/seek-to.lua".source = ./files/config/mpv/scripts/seek-to.lua;
+    ".config/mpv/scripts/sponsorblock-minimal.lua".source = ./files/config/mpv/scripts/sponsorblock-minimal.lua;
+    ".config/mpv/scripts/thumbfast.lua".source = ./files/config/mpv/scripts/thumbfast.lua;
+    ".config/mpv/fonts/fluent-system-icons.ttf".source = ./files/config/mpv/fonts/fluent-system-icons.ttf;
+    ".config/mpv/fonts/Netflix Sans Bold.otf".source = ./files/config/mpv/fonts/Netflix_Sans_Bold.otf;
+    ".config/mpv/fonts/Netflix Sans Light.otf".source = ./files/config/mpv/fonts/Netflix_Sans_Light.otf;
+    ".config/mpv/fonts/Netflix Sans Medium.otf".source = ./files/config/mpv/fonts/Netflix_Sans_Medium.otf;
+  };
   # Waybar
   home.file = {
     ".config/waybar/config.jsonc".source = ./files/config/waybar/config.jsonc;
@@ -458,6 +476,10 @@ in
     ".scripts/shell/upload.sh".source = ./files/scripts/upload.sh;
     ".scripts/waybar.sh" = {
       source = ./files/scripts/waybar.sh;
+      executable = true;
+    };
+    ".scripts/record.sh" = {
+      source = ./files/scripts/record.sh;
       executable = true;
     };
   };
