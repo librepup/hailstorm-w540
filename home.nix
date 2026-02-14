@@ -813,10 +813,10 @@ in
       package = lib.mkForce pkgs.gruvbox-material-gtk-theme;
       name = lib.mkForce "Gruvbox-Material-Dark";
     };
-    iconTheme = {
-      package = pkgs.gruvbox-dark-icons-gtk;
-      name = "gruvbox-dark";
-    };
+    #iconTheme = {
+    #  package = pkgs.gruvbox-dark-icons-gtk;
+    #  name = "gruvbox-dark";
+    #};
   };
   # Stylix
   stylix = {
